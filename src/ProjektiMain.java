@@ -41,6 +41,7 @@ public class ProjektiMain {
          default:
 		
 		 	}
+	touch.run(); //what?
 		}
 	
 	}
