@@ -1,0 +1,43 @@
+import lejos.hardware.sensor.*;
+import lejos.hardware.port.*;
+import lejos.robotics.*;
+import lejos.robotics.filter.*;
+import lejos.utility.*;
+import lejos.hardware.Button;
+
+public class Distance extends Thread{
+	EV3IRSensor irsensor = new EV3IRSensor(SensorPort.S1); //Check port number
+	SampleProvider distance= irsensor.getDistanceMode();
+	SampleProvider distance2= irsensor.getSeekMode();
+
+	public Distance(){
+
+		Player play= new Player();
+	
+	 while (Button.ESCAPE.isUp()) { //this is for walls
+     	Delay.msDelay(2000);
+     	SampleProvider average = new MeanFilter(distance, 5); //5 means mean value of last 5 samples
+     	float[] distsample = new float[average.sampleSize()];
+     	average.fetchSample(distsample, 0);
+     	int dist = (int) distsample[0];
+     	
+     	while (dist < 50 && Button.ESCAPE.isUp()) { //let's see if 50 is enough
+         	play.playCrash(100); // this should be another sound
+         }
+     }
+	 
+	 while (Button.ESCAPE.isUp()) { //this is for other robots
+ 		Delay.msDelay(2000);
+ 		SampleProvider average = new MeanFilter(distance2, 5); //5 means mean value of last 5 samples
+     	float[] distsample = new float[average.sampleSize()];
+     	average.fetchSample(distsample, 0);
+     	int dist = (int) distsample [0];
+     	
+     	while (dist < 100 && Button.ESCAPE.isUp()) {
+     		play.playIwill(200); // this should be whistle or something
+     		
+     	}
+     	
+	 }
+	}
+}
