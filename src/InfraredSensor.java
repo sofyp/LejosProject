@@ -13,5 +13,10 @@ public class InfraredSensor {
 		int remoteCommand = infraredSensor.getRemoteCommand(0);
 		return remoteCommand;
 	}
+	public boolean waitRemoteCommand() {
+		int waitCommand= infraredSensor.getRemoteCommand(0);
+		boolean waitCom= (waitCommand !=0);
+		return waitCom;
+	}
 
 }
